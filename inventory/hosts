@@ -1,0 +1,13 @@
+[master]
+172.20.20.5 
+172.20.20.6 
+172.20.20.7 
+
+[worker]
+172.20.20.8
+172.20.20.9 
+172.20.20.10 
+
+[all:vars]
+ansible_connection=ssh
+ansible_user=bryan

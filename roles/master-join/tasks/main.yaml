@@ -1,0 +1,17 @@
+- name: Copy join-info.txt
+  copy:
+    src: ../../files/join-info.txt
+    dest: $HOME/join-info.txt
+  
+- name: Setting join facts
+  set_fact:
+    join_master: "{{ lookup('file', '../../files/join-info.txt').split('\n\n')[-4] }}"
+    join_worker: "{{ lookup('file', '../../files/join-info.txt').split('\n\n')[-1] }}"
+
+- name: Debug join master
+  debug: 
+    msg: "{{ join_master }} --ignore-preflight-errors=DirAvailable--etc-kubernetes-manifests"
+
+- name: Join master
+  shell: |
+    {{ join_master }} --ignore-preflight-errors=DirAvailable--etc-kubernetes-manifests

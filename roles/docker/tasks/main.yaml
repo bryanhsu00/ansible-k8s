@@ -1,0 +1,73 @@
+- name: Trun off swap
+  shell: |
+    swapoff -a
+
+- name: Letting iptables see bridged traffic 1
+  shell: |
+    cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+    br_netfilter
+    EOF
+
+# - name: Add the 802.1q module
+#   community.general.modprobe:
+#     name: br_netfilter
+#     state: present
+
+- name: Letting iptables see bridged traffic 2
+  shell: |
+    cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+    net.bridge.bridge-nf-call-ip6tables = 1
+    net.bridge.bridge-nf-call-iptables = 1
+    EOF
+
+- name: Letting iptables see bridged traffic 3
+  shell: |
+    sysctl --system
+
+- name: Update apt packages
+  apt:
+    update_cache: yes
+
+- name: Install packages to allow apt to use a repository over HTTPS
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg
+    - lsb-release
+
+- name: Add Docker’s official GPG key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    keyring: /usr/share/keyrings/docker-archive-keyring.gpg
+
+# - name: Get ubuntu version name
+#   shell: |
+#     lsb_release -cs
+#   register: version
+
+- name: Set up the stable repository
+  apt_repository:
+    repo: deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu focal stable
+    filename: docker
+
+- name: Update apt packages
+  apt:
+    update_cache: yes
+
+- name: Install Docker Engine
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - docker-ce=5:19.03.15~3-0~ubuntu-focal
+    - docker-ce-cli=5:19.03.15~3-0~ubuntu-focal
+    - containerd.io
+
+- name: Restart service docker
+  service:
+    name: docker
+    state: restarted

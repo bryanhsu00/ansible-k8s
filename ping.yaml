@@ -1,0 +1,9 @@
+- name: ping test
+  hosts: all
+  tasks:
+  - name: check host connection
+    ping:
+
+  - name: hello world
+    debug:
+      msg: "{{ test }}"

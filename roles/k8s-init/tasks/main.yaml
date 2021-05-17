@@ -1,0 +1,16 @@
+- name: Copy kubeadm-config.yaml
+  copy:
+    src: ../../files/kubeadm-config.yaml
+    dest: ~/kubeadm-config.yaml
+
+- name: kubeadm init
+  shell: |
+    kubeadm init --config=kubeadm-config.yaml --upload-certs > join-info.txt
+  args:
+    chdir: "~"
+
+- name: Store join-info.txt into files
+  fetch:
+    src: ~/join-info.txt
+    dest: ./roles/files/
+    flat: yes

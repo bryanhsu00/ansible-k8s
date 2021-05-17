@@ -1,0 +1,25 @@
+# - hosts: master[0]
+#   become: yes
+#   roles:
+    # - docker
+    # - k8s-install
+    # - master-config
+    # - k8s-init
+    # - kubectl-enable
+    # - cni-install
+
+# - hosts: master[1:3]
+#   become: yes
+#   roles:
+#     - docker
+#     - k8s-install
+#     - master-config
+#     - master-join
+#     - kubectl-enable
+
+- hosts: worker
+  become: yes
+  roles:
+    - docker
+    - k8s-install
+    - worker-join

@@ -1,0 +1,24 @@
+- name: Create manifests directory
+  file:
+    path: /etc/kubernetes/manifests
+    state: directory
+
+- name: Create haproxy directory
+  file:
+    path: /etc/haproxy
+    state: directory
+
+- name: Copy haproxy.cfg file
+  copy:
+    src: ../../files/haproxy.cfg
+    dest: /etc/haproxy/haproxy.cfg
+
+- name: Copy haproxy.yaml file
+  copy:
+    src: ../../files/haproxy.yaml
+    dest: /etc/kubernetes/manifests/haproxy.yaml
+
+- name: Copy keepalived.yaml file
+  copy:
+    src: ../../files/keepalived.yaml
+    dest: /etc/kubernetes/manifests/keepalived.yaml

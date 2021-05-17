@@ -1,0 +1,27 @@
+- name: Reset Kubernetes component
+  shell: "kubeadm reset --force"
+
+- name: Reset iptables
+  shell: |
+    iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
+
+- name: Remove /etc/cni/net.d
+  file:
+    path: /etc/cni/net.d
+    state: absent
+
+- name: Remove ~/.kube/config
+  file:
+    path: ~/.kube/config
+    state: absent
+
+- name: Remove docker
+  apt:
+    name: "{{ packages }}"
+    autoremove: yes
+    state: absent
+  vars:
+    packages:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
