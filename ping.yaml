@@ -6,4 +6,4 @@
 
   - name: hello world
     debug:
-      msg: "{{ test }}"
+      msg: "{{ master }}"

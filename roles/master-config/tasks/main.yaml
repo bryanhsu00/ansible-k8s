@@ -9,8 +9,8 @@
     state: directory
 
 - name: Copy haproxy.cfg file
-  copy:
-    src: ../../files/haproxy.cfg
+  template:
+    src: ../../files/haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg
 
 - name: Copy haproxy.yaml file
@@ -19,6 +19,6 @@
     dest: /etc/kubernetes/manifests/haproxy.yaml
 
 - name: Copy keepalived.yaml file
-  copy:
-    src: ../../files/keepalived.yaml
+  template:
+    src: ../../files/keepalived.yaml.j2
     dest: /etc/kubernetes/manifests/keepalived.yaml

@@ -67,7 +67,19 @@
     - docker-ce-cli=5:19.03.15~3-0~ubuntu-focal
     - containerd.io
 
+- name: Create /etc/docker directory
+  file:
+    path: /etc/docker
+    state: directory
+
+- name: Copy daemon.json file
+  copy:
+    src: ../../files/daemon.json
+    dest: /etc/docker/daemon.json
+
 - name: Restart service docker
-  service:
+  systemd:
     name: docker
     state: restarted
+    daemon_reload: yes
+    enabled: yes

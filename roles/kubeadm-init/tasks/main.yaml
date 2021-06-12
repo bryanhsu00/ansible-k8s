@@ -1,6 +1,6 @@
 - name: Copy kubeadm-config.yaml
-  copy:
-    src: ../../files/kubeadm-config.yaml
+  template:
+    src: ../../files/kubeadm-config.yaml.j2
     dest: ~/kubeadm-config.yaml
 
 - name: kubeadm init

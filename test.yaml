@@ -1,7 +1,0 @@
-- hosts: localhost
-  vars:
-     contents: "{{ lookup('file', 'join-info.txt').split('\n\n')[-4] }}"
-  tasks:
-     - debug: msg="{{ contents }}"
-    # - shell: |
-    #     {{ contents }}
