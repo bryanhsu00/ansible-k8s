@@ -1,7 +1,7 @@
-# - name: Download Calico CNI plugin
-#   get_url:
-#     url: https://docs.projectcalico.org/manifests/calico.yaml
-#     dest: ~/calico.yaml
+- name: Download Calico CNI plugin
+  get_url:
+    url: https://docs.projectcalico.org/manifests/calico.yaml
+    dest: ~/calico.yaml
 
 - name: Replace content in calico.yaml
   shell: |
@@ -9,8 +9,8 @@
   args:
     chdir: "~"
 
-# - name: Apply CNI plugin
-#   shell: |
-#     kubectl apply -f calico.yaml
-#   args:
-#     chdir: "~"
+- name: Apply CNI plugin
+  shell: |
+    kubectl apply -f calico.yaml
+  args:
+    chdir: "~"
