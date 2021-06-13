@@ -4,7 +4,7 @@
 Use ansible to create an HA k8s cluster with three master nodes and three worker nodes automatically.
 
 ## Environment
-- ubuntu 18.04
+- ubuntu 20.04
 - kubeadm 1.20
 - CRI: docker 19.03
 - CNI: calico
