@@ -3,4 +3,4 @@ kind: ClusterConfiguration
 kubernetesVersion: v1.20.0
 controlPlaneEndpoint: "{{ vip }}:8443"
 networking:
-  podSubnet: "{{ podSubnet }}"
+  podSubnet: "10.244.0.0/16"
