@@ -1,13 +1,13 @@
 # ansible-k8s
 
 ## Introduction
-Use ansible to create an HA k8s cluster with three master nodes and three worker nodes automatically.
+Use ansible to create an k8s cluster with single master nodes and three worker nodes automatically.
 
 ## Environment
 - ubuntu 20.04
-- kubeadm 1.20
-- CRI: docker 19.03
-- CNI: calico
+- kubeadm 1.22
+- CRI: cri-o 19.03
+- CNI: flannel
 
 ## Prerequisite
 Edit `inventory/hosts` and `group_vars/all.yaml` as your desired

@@ -1,25 +1,25 @@
 - hosts: master[0]
   become: yes
   roles:
-    - docker
+    - crio
     - k8s-install
-    - master-config
+    # - master-config
     - kubeadm-init
     - kubectl-enable
     - cni-install
 
-- hosts: master[1:]
-  become: yes
-  roles:
-    - docker
-    - k8s-install
-    - master-config
-    - master-join
-    - kubectl-enable
+# - hosts: master[1:]
+#   become: yes
+#   roles:
+#     - docker
+#     - k8s-install
+#     - master-config
+#     - master-join
+#     - kubectl-enable
 
 - hosts: worker
   become: yes
   roles:
-    - docker
+    - crio
     - k8s-install
     - worker-join

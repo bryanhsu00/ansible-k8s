@@ -1,0 +1,71 @@
+- name: Add br_netfilter module
+  community.general.modprobe:
+    name: br_netfilter
+    state: present
+
+- name: Enable network utilities
+  shell: |
+    echo 1 > /proc/sys/net/ipv4/ip_forward
+    echo 1 > /proc/sys/net/bridge/bridge-nf-call-iptables
+
+- name: Trun off swap
+  shell: |
+    swapoff -a
+
+- name: Write br_netfilter to k8s.conf
+  shell: |
+    cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+    br_netfilter
+    EOF
+
+- name: Letting ipv4 see bridged traffic
+  ansible.posix.sysctl:
+    name: net.bridge.bridge-nf-call-iptables
+    value: '1'
+    sysctl_file: /etc/sysctl.d/k8s.conf
+    reload: no
+
+- name: Letting ipv6 see bridged traffic
+  ansible.posix.sysctl:
+    name: net.bridge.bridge-nf-call-ip6tables
+    value: '1'
+    sysctl_file: /etc/sysctl.d/k8s.conf
+    reload: no
+
+- name: Reload sysctl modules
+  shell: |
+    sysctl --system
+
+- name: Add cri-o apt key
+  apt_key:
+    url: https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:{{ VERSION }}/{{ OS }}/Release.key
+
+- name: Add cri-o-runc apt key
+  apt_key:
+    url: https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ OS }}/Release.key
+
+- name: Add cri-o to sourcelist 
+  apt_repository:
+    repo: deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ OS }}/ /
+    filename: devel:kubic:libcontainers:stable.list
+    state: present
+
+- name: Add cri-o-runc to sourcelist 
+  apt_repository:
+    repo: deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{ VERSION }}/{{ OS }}/ /
+    filename: devel:kubic:libcontainers:stable:cri-o:{{ VERSION }}.list
+    state: present
+
+- name: Update apt packages & install cri-o, cri-o-runc
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+  vars:
+    packages:
+    - cri-o
+    - cri-o-runc
+
+- name: Start crio.service
+  systemd:
+    name: crio.service
+    state: started

@@ -1,16 +1,20 @@
-- name: Download Calico CNI plugin
-  get_url:
-    url: https://docs.projectcalico.org/manifests/calico.yaml
-    dest: ~/calico.yaml
+# - name: Download Calico CNI plugin
+#   get_url:
+#     url: https://docs.projectcalico.org/manifests/calico.yaml
+#     dest: ~/calico.yaml
 
-- name: Replace content in calico.yaml
-  shell: |
-    sed -i 's/192.168.0.0\/16/10.244.0.0\/16/g' calico.yaml
-  args:
-    chdir: "~"
+# - name: Replace content in calico.yaml
+#   shell: |
+#     sed -i 's/192.168.0.0\/16/10.244.0.0\/16/g' calico.yaml
+#   args:
+#     chdir: "~"
 
-- name: Apply CNI plugin
+# - name: Apply CNI plugin
+#   shell: |
+#     kubectl apply -f calico.yaml
+#   args:
+#     chdir: "~"
+
+- name: Cni install
   shell: |
-    kubectl apply -f calico.yaml
-  args:
-    chdir: "~"
+    kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml

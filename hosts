@@ -1,0 +1,11 @@
+[master]
+172.20.20.1
+
+[worker]
+172.20.20.2
+172.20.20.3
+
+[all:vars]
+ansible_connection=ssh
+ansible_user=bryan
+; ansible_pass=bryan

@@ -1,3 +1,13 @@
+- name: Update apt packages & install apt-transport-https, ca-certificates, curl
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+  vars:
+    packages:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+
 - name: Download the Google Cloud public signing key
   apt_key:
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
@@ -8,15 +18,12 @@
     repo: deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main
     filename: kubernetes.list
 
-- name: Update apt packages
-  apt:
-    update_cache: yes
-
-- name: Install kubelet, kubeadm and kubectl
+- name: Update apt packages & install kubelet, kubeadm and kubectl
   apt:
     name: "{{ packages }}"
+    update_cache: yes
   vars:
     packages:
-      - kubelet=1.20.0-00
-      - kubeadm=1.20.0-00
-      - kubectl=1.20.0-00
+      - kubelet={{ VERSION }}.0-00
+      - kubeadm={{ VERSION }}.0-00
+      - kubectl={{ VERSION }}.0-00

@@ -1,11 +1,17 @@
-- name: Copy kubeadm-config.yaml
-  template:
-    src: ../../files/kubeadm-config.yaml.j2
-    dest: ~/kubeadm-config.yaml
+# - name: Copy kubeadm-config.yaml
+#   template:
+#     src: ../../files/kubeadm-config.yaml.j2
+#     dest: ~/kubeadm-config.yaml
+
+# - name: kubeadm init
+#   shell: |
+#     kubeadm init --config=kubeadm-config.yaml --upload-certs > join-info.txt
+#   args:
+#     chdir: "~"
 
 - name: kubeadm init
   shell: |
-    kubeadm init --config=kubeadm-config.yaml --upload-certs > join-info.txt
+    kubeadm init --pod-network-cidr=10.244.0.0/16 --upload-certs > join-info.txt
   args:
     chdir: "~"
 
